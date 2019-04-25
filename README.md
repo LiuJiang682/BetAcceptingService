@@ -31,15 +31,23 @@ Sample Bet Data
 
 | Investment Amount | Double | 100.00 |
 
-1. Add some validation to the bets processing
-  1. Bet Type can only be _WIN / PLACE / TRIFECTA / DOUBLE / QUADDIE_
-  2. Maximum Investment Amount is $20,000
-  3. Date Time must not be in the past
+- Add some validation to the bets processing
 
-1. Add some reports to the microservice
-  1. Total investment per bet type
-  2. Total investment per Customer ID
-  3. Total bets sold per bet type
-  4. Total number of bets sold per hour
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a. Bet Type can only be _WIN / PLACE / TRIFECTA / DOUBLE / QUADDIE_
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. Maximum Investment Amount is $20,000
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c. Date Time must not be in the past
 
-1. Add security to the Microservice
+
+- Add some reports to the microservice
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a. Total investment per bet type
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;b. Total investment per Customer ID
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c. Total bets sold per bet type
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d. Total number of bets sold per hour
+
+- Add security to the Microservice
