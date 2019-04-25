@@ -48,4 +48,24 @@ public class MaxAmountPropertyValidatorTest {
 		testInstance.validate(bet);
 		fail("Program reached unexpected point!");
 	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldRaiseExceptionWhenAmountIsZero() {
+		// Given
+		Bet bet = TestFixture.getBet();
+		bet.setInvestmentAmount(0);
+		// When
+		testInstance.validate(bet);
+		fail("Program reached unexpected point!");
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldRaiseExceptionWhenAmountIsLTZero() {
+		// Given
+		Bet bet = TestFixture.getBet();
+		bet.setInvestmentAmount(-1d);
+		// When
+		testInstance.validate(bet);
+		fail("Program reached unexpected point!");
+	}
 }

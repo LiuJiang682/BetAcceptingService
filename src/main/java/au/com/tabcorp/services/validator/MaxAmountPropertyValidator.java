@@ -27,6 +27,10 @@ public class MaxAmountPropertyValidator implements MaxAmountValidator {
 	public void validate(Bet bet) {
 		BigDecimal maxAllowsAmount = new BigDecimal(maxAllows);
 		BigDecimal betAmount = new BigDecimal(bet.getInvestmentAmount());
+		if (Numeric.ZERO <= BigDecimal.ZERO.compareTo(betAmount)) {
+			//Exceed max
+			throw new IllegalArgumentException("The investment amount cannot be less than or equal to Zero!");
+		}
 		if (maxAllowsAmount.compareTo(betAmount) < Numeric.ZERO) {
 			//Exceed max
 			throw new IllegalArgumentException("The investment amount exceeded maximum allows!");

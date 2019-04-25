@@ -5,8 +5,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
-import java.util.Map;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,8 +26,9 @@ import au.com.tabcorp.test.fixture.TestFixture;
 public class BetControllerIT {
 
 	private static final String EXPECTED_ERROR_EXCEEDED_MAX = "The investment amount exceeded maximum allows!";
+	private static final String EXPECTED_ERROR_INVALID_AMOUNT = "The investment amount cannot be less than or equal to Zero!";
 	
-	@LocalServerPort
+			@LocalServerPort
 	private int port;
 	
 	@Test
@@ -66,6 +65,44 @@ public class BetControllerIT {
 		//Then
 		assertThat(response, is(notNullValue()));
 		assertThat(response.getBody(), is(equalTo(EXPECTED_ERROR_EXCEEDED_MAX)));
+	}
+	
+	@Test
+	public void shouldRejectTheBetWhenAmountIsZERO() {
+		//Given
+		TestRestTemplate restTemplate = new TestRestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		Bet bet = TestFixture.getBet();
+		bet.setInvestmentAmount(0d);
+		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
+				headers);
+		//When
+		ResponseEntity<String> response = restTemplate.exchange(
+				createURLWithPort("/"),
+				HttpMethod.PUT, entity, String.class);
+		
+		//Then
+		assertThat(response, is(notNullValue()));
+		assertThat(response.getBody(), is(equalTo(EXPECTED_ERROR_INVALID_AMOUNT)));
+	}
+	
+	@Test
+	public void shouldRejectTheBetWhenAmountIsltZERO() {
+		//Given
+		TestRestTemplate restTemplate = new TestRestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		Bet bet = TestFixture.getBet();
+		bet.setInvestmentAmount(-2d);
+		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
+				headers);
+		//When
+		ResponseEntity<String> response = restTemplate.exchange(
+				createURLWithPort("/"),
+				HttpMethod.PUT, entity, String.class);
+		
+		//Then
+		assertThat(response, is(notNullValue()));
+		assertThat(response.getBody(), is(equalTo(EXPECTED_ERROR_INVALID_AMOUNT)));
 	}
 	
 	private String createURLWithPort(final String uri) {
