@@ -1,7 +1,6 @@
 package au.com.tabcorp.model;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -14,17 +13,18 @@ public class Bet implements Serializable {
 	 */
 	private static final long serialVersionUID = -4949949395251451863L;
 	
-	private Date dateTime;
+
+	private String dateTime;
 	private BetType betType;
 	private long propNumber;
 	private long customerId;
 	private double investmentAmount;
 
-	public Date getDateTime() {
+	public String getDateTime() {
 		return dateTime;
 	}
 
-	public void setDateTime(Date dateTime) {
+	public void setDateTime(String dateTime) {
 		this.dateTime = dateTime;
 	}
 

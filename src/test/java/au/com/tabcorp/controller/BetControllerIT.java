@@ -27,8 +27,10 @@ public class BetControllerIT {
 
 	private static final String EXPECTED_ERROR_EXCEEDED_MAX = "The investment amount exceeded maximum allows!";
 	private static final String EXPECTED_ERROR_INVALID_AMOUNT = "The investment amount cannot be less than or equal to Zero!";
+	private static final String EXPECTED_ERROR_NULL_DATE = "DateTime cannot be null!";
+	private static final String EXPECTED_ERROR_PAST_DATE = "DateTime cannot be in the past!";
 	
-			@LocalServerPort
+	@LocalServerPort
 	private int port;
 	
 	@Test
@@ -103,6 +105,44 @@ public class BetControllerIT {
 		//Then
 		assertThat(response, is(notNullValue()));
 		assertThat(response.getBody(), is(equalTo(EXPECTED_ERROR_INVALID_AMOUNT)));
+	}
+	
+	@Test
+	public void shouldRejectTheBetWhenTheDateTimeIsNull() {
+		//Given
+		TestRestTemplate restTemplate = new TestRestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		Bet bet = TestFixture.getBet();
+		bet.setDateTime(null);
+		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
+				headers);
+		//When
+		ResponseEntity<String> response = restTemplate.exchange(
+				createURLWithPort("/"),
+				HttpMethod.PUT, entity, String.class);
+		
+		//Then
+		assertThat(response, is(notNullValue()));
+		assertThat(response.getBody(), is(equalTo(EXPECTED_ERROR_NULL_DATE)));
+	}
+	
+	@Test
+	public void shouldRejectTheBetWhenAmountIsPast() {
+		//Given
+		TestRestTemplate restTemplate = new TestRestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		Bet bet = TestFixture.getBet();
+		bet.setDateTime(TestFixture.getPastDate());
+		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
+				headers);
+		//When
+		ResponseEntity<String> response = restTemplate.exchange(
+				createURLWithPort("/"),
+				HttpMethod.PUT, entity, String.class);
+		
+		//Then
+		assertThat(response, is(notNullValue()));
+		assertThat(response.getBody(), is(equalTo(EXPECTED_ERROR_PAST_DATE)));
 	}
 	
 	private String createURLWithPort(final String uri) {
