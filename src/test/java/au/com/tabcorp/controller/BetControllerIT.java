@@ -47,7 +47,12 @@ public class BetControllerIT {
 				HttpMethod.PUT, entity, Bet.class);
 		//Then
 		assertThat(response, is(notNullValue()));
-		assertThat(response.getBody(), is(equalTo(bet)));
+		Bet retrievedBet = response.getBody();
+		assertThat(retrievedBet.getBetType(), is(equalTo(bet.getBetType())));
+		assertThat(retrievedBet.getCustomerId(), is(equalTo(bet.getCustomerId())));
+		assertThat(retrievedBet.getDateTime(), is(equalTo(bet.getDateTime())));
+		assertThat(retrievedBet.getInvestmentAmount(), is(equalTo(bet.getInvestmentAmount())));
+		assertThat(retrievedBet.getPropNumber(), is(equalTo(bet.getPropNumber())));
 	}
 	
 	@Test

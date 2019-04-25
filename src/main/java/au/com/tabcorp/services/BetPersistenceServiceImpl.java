@@ -1,16 +1,20 @@
 package au.com.tabcorp.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import au.com.tabcorp.model.Bet;
+import au.com.tabcorp.repositories.BetRepository;
 
 @Service
 public class BetPersistenceServiceImpl implements BetPersistenceService {
 
+	@Autowired
+	private BetRepository betRepository;
+	
 	@Override
 	public void save(Bet bet) {
-		// TODO Auto-generated method stub
-
+		betRepository.save(bet);
 	}
 
 }

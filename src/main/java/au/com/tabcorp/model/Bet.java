@@ -2,10 +2,19 @@ package au.com.tabcorp.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+@Entity
+@Table(name="bet")
 public class Bet implements Serializable {
 
 	/**
@@ -13,12 +22,28 @@ public class Bet implements Serializable {
 	 */
 	private static final long serialVersionUID = -4949949395251451863L;
 	
-
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="bet_id")
+	private long betId;
+	@Column(name="date_time")
 	private String dateTime;
+	@Column(name="bet_type")
 	private BetType betType;
+	@Column(name="prop_number")
 	private long propNumber;
+	@Column(name="customer_id")
 	private long customerId;
+	@Column(name="investment_amount")
 	private double investmentAmount;
+
+	public long getBetId() {
+		return betId;
+	}
+
+	public void setBetId(long betId) {
+		this.betId = betId;
+	}
 
 	public String getDateTime() {
 		return dateTime;
