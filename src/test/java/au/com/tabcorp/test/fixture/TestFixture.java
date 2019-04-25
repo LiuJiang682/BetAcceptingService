@@ -8,6 +8,7 @@ public class TestFixture {
 	public static final Bet getBet() {
 		Bet bet = new Bet();
 		bet.setBetType(BetType.WIN);
+		bet.setInvestmentAmount(200d);
 		return bet;
 	}
 }

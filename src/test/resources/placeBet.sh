@@ -1,1 +1,1 @@
-curl -d @src/test/resources/bet.json --header "Content-Type: application/json"  -X PUT localhost:8080/
+curl -v -d @src/test/resources/bet.json --header "Content-Type: application/json"  -X PUT localhost:8080/
