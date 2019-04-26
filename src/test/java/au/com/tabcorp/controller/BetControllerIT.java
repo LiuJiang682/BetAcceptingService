@@ -50,7 +50,9 @@ public class BetControllerIT {
 		Bet retrievedBet = response.getBody();
 		assertThat(retrievedBet.getBetType(), is(equalTo(bet.getBetType())));
 		assertThat(retrievedBet.getCustomerId(), is(equalTo(bet.getCustomerId())));
-		assertThat(retrievedBet.getDateTime(), is(equalTo(bet.getDateTime())));
+		String retrievedBetTime = retrievedBet.getDateTime().toString();
+		String betTime = bet.getDateTime().toString();
+		assertThat(betTime.startsWith(retrievedBetTime), is(true));
 		assertThat(retrievedBet.getInvestmentAmount(), is(equalTo(bet.getInvestmentAmount())));
 		assertThat(retrievedBet.getPropNumber(), is(equalTo(bet.getPropNumber())));
 	}

@@ -1,8 +1,6 @@
 package au.com.tabcorp.services.validator;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,22 +15,13 @@ public class DateTimeValidatorImpl implements DateTimeValidator {
 	
 	@Override
 	public void validate(Bet bet) {
-		String dateTimeString = bet.getDateTime();
-		if (null == dateTimeString) {
+		LocalDateTime dateTime = bet.getDateTime();
+		if (null == dateTime) {
 			throw new IllegalArgumentException("DateTime cannot be null!");
 		} else {
-			
-			SimpleDateFormat sdf = new SimpleDateFormat(dateTimeFormat);
-			
-			try {
-				Date dateTime = sdf.parse(dateTimeString);
-				if(dateTime.before(new Date())) {
-					throw new IllegalArgumentException("DateTime cannot be in the past!");
-				}
-			} catch (ParseException e) {
-				throw new IllegalArgumentException("Unknow date time format");
+			if (dateTime.isBefore(LocalDateTime.now())) {
+				throw new IllegalArgumentException("DateTime cannot be in the past!");
 			}
-			
 		}
 	}
 

@@ -1,6 +1,7 @@
 package au.com.tabcorp.test.fixture;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 import au.com.tabcorp.model.Bet;
@@ -16,18 +17,14 @@ public class TestFixture {
 		return bet;
 	}
 	
-	public static final String getFutureDate() {
-		Calendar calendar = Calendar.getInstance();
-		int day = calendar.get(Calendar.DAY_OF_YEAR);
-		calendar.set(Calendar.DAY_OF_YEAR, ++day);
-		return sdf.format(calendar.getTime());
+	public static final LocalDateTime getFutureDate() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		return localDateTime.plusDays(1);
 	}
 	
-	public static final String getPastDate() {
-		Calendar calendar = Calendar.getInstance();
-		int day = calendar.get(Calendar.DAY_OF_YEAR);
-		calendar.set(Calendar.DAY_OF_YEAR, --day);
-		return sdf.format(calendar.getTime());
+	public static final LocalDateTime getPastDate() {
+		LocalDateTime localDateTime = LocalDateTime.now();
+		return localDateTime.minusDays(1);
 	}
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");

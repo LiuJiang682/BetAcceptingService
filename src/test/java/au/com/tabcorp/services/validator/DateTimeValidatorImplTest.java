@@ -51,14 +51,4 @@ public class DateTimeValidatorImplTest {
 		testInstance.validate(bet);
 		fail("Program reached unexpected point!");
 	}
-	
-	@Test(expected = IllegalArgumentException.class)
-	public void shouldRaiseExceptionWhenTheTimeFormatIsUnknown() {
-		//Given
-		Bet bet = TestFixture.getBet();
-		bet.setDateTime("44ddf");
-		//When
-		testInstance.validate(bet);
-		fail("Program reached unexpected point!");
-	}
 }
