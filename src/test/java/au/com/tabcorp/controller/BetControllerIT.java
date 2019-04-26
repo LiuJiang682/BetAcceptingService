@@ -5,19 +5,26 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import au.com.tabcorp.converter.BetMessageConverter;
 import au.com.tabcorp.BetAcceptingServiceApplication;
 import au.com.tabcorp.model.Bet;
+import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.test.fixture.TestFixture;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -150,6 +157,30 @@ public class BetControllerIT {
 		//Then
 		assertThat(response, is(notNullValue()));
 		assertThat(response.getBody(), is(equalTo(EXPECTED_ERROR_PAST_DATE)));
+	}
+	
+	@Test
+    public void shouldAcceptBinary() throws Exception {
+		//Given
+        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder().additionalMessageConverters(new BetMessageConverter());
+        TestRestTemplate testRestTemplate = new TestRestTemplate(restTemplateBuilder);
+
+        Bet bet = new Bet();
+        bet.setBetType(BetType.WIN);
+        bet.setInvestmentAmount(200d);
+        bet.setDateTime(LocalDateTime.now().plusDays(1));
+//        String uri = "http://localhost:8080/binary";
+        String uri = createURLWithPort("/binary");
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
+        //When
+        ResponseEntity<Bet> responseEntity = testRestTemplate.exchange(uri, HttpMethod.PUT, 
+        		new HttpEntity<>(bet, headers), Bet.class);
+        //Then
+        assertThat(responseEntity, is(notNullValue()));
+        Bet savedBet = responseEntity.getBody();
+        assertThat(savedBet.getInvestmentAmount(), is(equalTo(bet.getInvestmentAmount())));
 	}
 	
 	private String createURLWithPort(final String uri) {

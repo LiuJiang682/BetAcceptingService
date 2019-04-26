@@ -26,4 +26,12 @@ public class BetController {
 		betService.placeBet(bet);
 		return new ResponseEntity<Bet>(bet, HttpStatus.OK);
 	}
+	
+	
+	@RequestMapping(method = RequestMethod.PUT, value = "/binary")
+    public ResponseEntity<Bet> acceptBet(@RequestBody Bet bet) {
+        LOGGER.info("acceptBet: " + bet);
+        betService.placeBet(bet);
+        return new ResponseEntity<>(bet, HttpStatus.OK);
+    } 
 }
