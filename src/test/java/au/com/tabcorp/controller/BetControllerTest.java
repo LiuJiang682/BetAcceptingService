@@ -19,8 +19,6 @@ import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.services.BetService;
 import au.com.tabcorp.test.fixture.TestFixture;
 
-//@SpringBootTest
-//@ActiveProfiles("test")
 public class BetControllerTest {
 
 	@Mock

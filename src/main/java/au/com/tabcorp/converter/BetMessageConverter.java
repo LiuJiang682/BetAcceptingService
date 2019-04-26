@@ -30,10 +30,10 @@ public class BetMessageConverter extends AbstractHttpMessageConverter<Bet> {
                                HttpInputMessage inputMessage) throws IOException {
         ObjectInputStream ois = new ObjectInputStream(inputMessage.getBody());
         Bet bet = null;
-        LOGGER.info("About to read object");
+        LOGGER.debug("About to read object");
         try {
             bet = (Bet)ois.readObject();
-            LOGGER.info("Read in bet " + bet);
+            LOGGER.debug("Read in bet " + bet);
         }
         catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
@@ -45,7 +45,7 @@ public class BetMessageConverter extends AbstractHttpMessageConverter<Bet> {
         outputMessage.getHeaders().setContentType(MediaType.APPLICATION_OCTET_STREAM);
         final OutputStream outputStream = outputMessage.getBody();
         ObjectOutputStream oos = new ObjectOutputStream(outputStream);
-        LOGGER.info("About to write object " + bet);
+        LOGGER.debug("About to write object " + bet);
         oos.writeObject(bet);
         outputStream.close();
     }
