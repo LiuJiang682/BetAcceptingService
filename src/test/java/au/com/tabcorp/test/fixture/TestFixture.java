@@ -1,11 +1,10 @@
 package au.com.tabcorp.test.fixture;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.BetType;
+import au.com.tabcorp.model.BetTypeTotal;
 
 public class TestFixture {
 
@@ -27,5 +26,8 @@ public class TestFixture {
 		return localDateTime.minusDays(1);
 	}
 	
-	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	public static final BetTypeTotal getBetTypeTotal() {
+		return new BetTypeTotal(BetType.WIN, 200d);
+	}
+	
 }

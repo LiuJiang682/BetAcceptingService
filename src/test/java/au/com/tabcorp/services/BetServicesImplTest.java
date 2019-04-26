@@ -2,9 +2,13 @@ package au.com.tabcorp.services;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.Before;
@@ -16,6 +20,7 @@ import org.mockito.MockitoAnnotations;
 
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.BetType;
+import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.test.fixture.TestFixture;
 
 public class BetServicesImplTest {
@@ -50,5 +55,19 @@ public class BetServicesImplTest {
 		List<Bet> persistentedBet = persistentBetCaptor.getAllValues();
 		assertThat(persistentedBet.size(), is(equalTo(1)));
 		assertThat(persistentedBet.get(0), is(equalTo(bet)));
+	}
+	
+	@Test
+	public void shouldCallGetTotalInvestmentByBetType() {
+		//Given
+		BetType betType = BetType.WIN;
+		when(mockBetPersistenceService.getTotalInvestmentByBetType(
+				eq(betType)))
+			.thenReturn(TestFixture.getBetTypeTotal());
+		//When
+		BetTypeTotal betTypeTotal = testInstance.getTotalInvestmentByBetType(betType);
+		assertThat(betTypeTotal, is(notNullValue()));
+		assertThat(betTypeTotal.getBetType(), is(equalTo(betType)));
+		assertThat(betTypeTotal.getTotal(), is(equalTo(new BigDecimal(200d))));
 	}
 }
