@@ -21,8 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import au.com.tabcorp.converter.BetMessageConverter;
 import au.com.tabcorp.BetAcceptingServiceApplication;
+import au.com.tabcorp.converter.BetMessageConverter;
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.test.fixture.TestFixture;

@@ -48,7 +48,7 @@ public class BetStatController {
 		return new ResponseEntity<BetCount>(betCount, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/stat/averageBetPerHour", method = RequestMethod.GET)
+	@RequestMapping(value = "/stat/averageBetPerHour", method = RequestMethod.POST)
 	public ResponseEntity<BigDecimal> getAverageBetPerHour(@RequestBody DateRange dateRange) {
 		LOGGER.info("Abount to get average bet per hour " + dateRange);
 		BigDecimal averagePerHour = betService.getAveragePerHourBetween(dateRange);
