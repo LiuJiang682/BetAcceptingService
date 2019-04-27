@@ -3,6 +3,7 @@ package au.com.tabcorp.test.fixture;
 import java.time.LocalDateTime;
 
 import au.com.tabcorp.model.Bet;
+import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
@@ -33,6 +34,10 @@ public class TestFixture {
 
 	public static CustomerTotal getCustomerTotal() {
 		return new CustomerTotal(1, 200d);
+	}
+
+	public static BetCount getBetCount() {
+		return new BetCount(BetType.WIN, 200l);
 	}
 	
 }

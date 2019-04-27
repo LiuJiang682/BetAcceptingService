@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import au.com.tabcorp.model.Bet;
+import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
@@ -59,5 +60,26 @@ public class BetRespositoryTest {
 		assertThat(customerTotal, is(notNullValue()));
 		assertThat(customerTotal.getCustomerId(), is(equalTo(customerId)));
 		assertThat(customerTotal.getTotal(), is(equalTo(new BigDecimal(400d))));
+	}
+	
+	@Test
+	public void ShouldReturnBetTypeWinCount() {
+		//Given
+		betRepository.deleteAll();
+		Bet bet1 = TestFixture.getBet();
+		Bet bet2 = TestFixture.getBet();
+		betRepository.save(bet1);
+		betRepository.save(bet2);
+		Bet bet3 = TestFixture.getBet();
+		bet3.setBetType(BetType.DOUBLE);
+		betRepository.save(bet3);
+		
+		//When
+		BetCount betCount = betRepository
+				.getBetCountByBetType(BetType.WIN);
+		//Then
+		assertThat(betCount, is(notNullValue()));
+		assertThat(betCount.getBetType(), is(equalTo(BetType.WIN)));
+		assertThat(betCount.getBetCount(), is(equalTo(2l)));
 	}
 }

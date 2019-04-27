@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
 
+import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
@@ -63,5 +64,20 @@ public class BetStatControllerTest {
 		CustomerTotal customerTotal = result.getBody();
 		assertThat(customerTotal.getCustomerId()  == customerId, is(true));
 		assertThat(customerTotal.getTotal(), is(equalTo(new BigDecimal(200d))));
+	}
+	
+	@Test
+	public void shouldReturnTotalByBetCount() {
+		//Given
+		BetType betType = BetType.WIN;
+		when(mockBetService.getBetCountByBetType(eq(betType)))
+			.thenReturn(TestFixture.getBetCount());
+		//When
+		ResponseEntity<BetCount> result = testInstance.getBetCountByBetType(betType);
+		//Then
+		assertThat(result, is(notNullValue()));
+		BetCount betCount = result.getBody();
+		assertThat(betCount.getBetType(), is(equalTo(betType)));
+		assertThat(betCount.getBetCount(), is(equalTo(200l)));
 	}
 }

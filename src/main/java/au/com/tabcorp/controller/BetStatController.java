@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
@@ -34,5 +35,12 @@ public class BetStatController {
 		LOGGER.info("About to get total investment for customer " + customerId);
 		CustomerTotal customerTotal = betService.getTotalInvestmentByCustomer(customerId);
 		return new ResponseEntity<CustomerTotal>(customerTotal, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/stat/totalBetCountByType/{betType}", method = RequestMethod.GET)
+	public ResponseEntity<BetCount> getBetCountByBetType(@PathVariable BetType betType) {
+		LOGGER.info("Abount to get total bet count for bet type: " + betType);
+		BetCount betCount = betService.getBetCountByBetType(betType);
+		return new ResponseEntity<BetCount>(betCount, HttpStatus.OK);
 	}
 }

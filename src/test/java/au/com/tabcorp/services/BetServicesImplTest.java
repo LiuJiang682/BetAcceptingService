@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import au.com.tabcorp.model.Bet;
+import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
@@ -85,5 +86,19 @@ public class BetServicesImplTest {
 		assertThat(customerTotal, is(notNullValue()));
 		assertThat(customerTotal.getCustomerId(), is(equalTo(customerId)));
 		assertThat(customerTotal.getTotal(), is(equalTo(new BigDecimal(200d))));
+	}
+	
+	@Test
+	public void shouldCallGetBetCountByBetType() {
+		//Given
+		BetType betType = BetType.WIN;
+		when(mockBetPersistenceService.getBetCountByBetType(
+				eq(betType)))
+			.thenReturn(TestFixture.getBetCount());
+		//When
+		BetCount betCount = testInstance.getBetCountByBetType(betType);
+		assertThat(betCount, is(notNullValue()));
+		assertThat(betCount.getBetType(), is(equalTo(betType)));
+		assertThat(betCount.getBetCount(), is(equalTo(200l)));
 	}
 }
