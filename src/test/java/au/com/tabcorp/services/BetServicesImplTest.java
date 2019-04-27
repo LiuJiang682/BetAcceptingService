@@ -8,6 +8,7 @@ import static org.junit.Assert.fail;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -18,7 +19,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -134,7 +134,7 @@ public class BetServicesImplTest {
 		LocalDateTime from = now.minusDays(Numeric.ONE);
 		dateRange.setFrom(from);
 		when(mockBetPersistenceService.getBetCountByRange(eq(dateRange.getFrom()),
-				Matchers.any(LocalDateTime.class)))
+				any(LocalDateTime.class)))
 			.thenReturn(24l);
 		//When
 		BigDecimal average = testInstance.getAveragePerHourBetween(dateRange);
@@ -147,7 +147,7 @@ public class BetServicesImplTest {
 		LocalDateTime capturedFrom = fromCaptor.getValue();
 		assertThat(capturedFrom, is(equalTo(from)));
 		LocalDateTime capturedTo = nowCaptor.getValue();
-		assertThat(capturedTo.isAfter(now), is(true));
+		assertThat(capturedTo.isAfter(now) || capturedTo.equals(now), is(true));
 	}
 	
 	@Test
@@ -157,7 +157,7 @@ public class BetServicesImplTest {
 		LocalDateTime now =LocalDateTime.now();
 		dateRange.setTo(now);
 		when(mockBetPersistenceService.getBetCountByRange(
-				Matchers.any(LocalDateTime.class),
+				any(LocalDateTime.class),
 				eq(now)))
 			.thenReturn(1l);
 		//When

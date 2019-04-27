@@ -1,0 +1,1 @@
+curl -v -i -d @src/test/resources/bet.json -H "Content-Type: application/json" -H "Accept:application/json" -X PUT -b cookies.txt http://localhost:8080
