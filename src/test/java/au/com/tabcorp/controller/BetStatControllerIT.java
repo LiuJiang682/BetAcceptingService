@@ -21,7 +21,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import au.com.tabcorp.BetAcceptingServiceApplication;
-import au.com.tabcorp.constants.Constants.Numeric;
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.DateRange;
 import au.com.tabcorp.repositories.BetRepository;
@@ -43,21 +42,30 @@ public class BetStatControllerIT {
 		//Given
 		betRepository.deleteAll();
 		Bet bet1 = TestFixture.getBet();
-		bet1.setCreated(LocalDateTime.now().minusMinutes(30));
+		bet1.setCreated(LocalDateTime.now().minusHours(2));
 		betRepository.save(bet1);
 		Bet bet2 = TestFixture.getBet();
-		bet2.setCreated(LocalDateTime.now().minusMinutes(30));
+		bet2.setCreated(LocalDateTime.now().minusHours(2));
 		betRepository.save(bet2);
 		Bet bet3 = TestFixture.getBet();
-		bet3.setCreated(LocalDateTime.now().minusMinutes(30));
+		bet3.setCreated(LocalDateTime.now().minusHours(2));
 		betRepository.save(bet3);
+		Bet bet4 = TestFixture.getBet();
+		bet4.setCreated(LocalDateTime.now().minusHours(2));
+		betRepository.save(bet4);
+		Bet bet5 = TestFixture.getBet();
+		bet5.setCreated(LocalDateTime.now().minusHours(2));
+		betRepository.save(bet5);
+		Bet bet6= TestFixture.getBet();
+		bet6.setCreated(LocalDateTime.now().minusHours(2));
+		betRepository.save(bet6);
 		
 		TestRestTemplate restTemplate = new TestRestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		DateRange dateRange = new DateRange();
 		LocalDateTime now = LocalDateTime.now();
 		dateRange.setTo(now);
-		dateRange.setFrom(now.minusHours(Numeric.ONE));
+		dateRange.setFrom(now.minusHours(2));
 		
 		HttpEntity<DateRange> entity = new HttpEntity<DateRange>(dateRange, 
 				headers);
@@ -68,6 +76,7 @@ public class BetStatControllerIT {
 		
 		//Then
 		assertThat(response, is(notNullValue()));
+		//6 bets in 2 hours, average 3 bets per hour
 		assertThat(response.getBody(), is(equalTo(new BigDecimal(3))));
 	}
 	
