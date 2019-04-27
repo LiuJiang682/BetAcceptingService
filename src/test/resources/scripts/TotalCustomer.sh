@@ -1,1 +1,1 @@
-curl -v http://localhost:8080/stat/totalByCustomer/0
+curl -v http://localhost:8080/stat/totalByCustomer/0 -u admin:password

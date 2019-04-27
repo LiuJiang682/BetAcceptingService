@@ -49,7 +49,9 @@ public class BetControllerIT {
 		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
 				headers);
 		//When
-		ResponseEntity<Bet> response = restTemplate.exchange(
+		ResponseEntity<Bet> response = restTemplate
+				.withBasicAuth("user", "password")
+				.exchange(
 				createURLWithPort("/"),
 				HttpMethod.PUT, entity, Bet.class);
 		//Then
@@ -74,7 +76,9 @@ public class BetControllerIT {
 		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
 				headers);
 		//When
-		ResponseEntity<String> response = restTemplate.exchange(
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("user", "password")
+				.exchange(
 				createURLWithPort("/"),
 				HttpMethod.PUT, entity, String.class);
 		
@@ -93,7 +97,9 @@ public class BetControllerIT {
 		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
 				headers);
 		//When
-		ResponseEntity<String> response = restTemplate.exchange(
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("user", "password")
+				.exchange(
 				createURLWithPort("/"),
 				HttpMethod.PUT, entity, String.class);
 		
@@ -112,7 +118,9 @@ public class BetControllerIT {
 		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
 				headers);
 		//When
-		ResponseEntity<String> response = restTemplate.exchange(
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("user", "password")
+				.exchange(
 				createURLWithPort("/"),
 				HttpMethod.PUT, entity, String.class);
 		
@@ -131,7 +139,9 @@ public class BetControllerIT {
 		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
 				headers);
 		//When
-		ResponseEntity<String> response = restTemplate.exchange(
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("user", "password")
+				.exchange(
 				createURLWithPort("/"),
 				HttpMethod.PUT, entity, String.class);
 		
@@ -150,7 +160,9 @@ public class BetControllerIT {
 		HttpEntity<Bet> entity = new HttpEntity<Bet>(bet, 
 				headers);
 		//When
-		ResponseEntity<String> response = restTemplate.exchange(
+		ResponseEntity<String> response = restTemplate
+				.withBasicAuth("user", "password")
+				.exchange(
 				createURLWithPort("/"),
 				HttpMethod.PUT, entity, String.class);
 		
@@ -175,7 +187,9 @@ public class BetControllerIT {
         headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_OCTET_STREAM));
         //When
-        ResponseEntity<Bet> responseEntity = testRestTemplate.exchange(uri, HttpMethod.PUT, 
+        ResponseEntity<Bet> responseEntity = testRestTemplate
+        		.withBasicAuth("user", "password")
+        		.exchange(uri, HttpMethod.PUT, 
         		new HttpEntity<>(bet, headers), Bet.class);
         //Then
         assertThat(responseEntity, is(notNullValue()));

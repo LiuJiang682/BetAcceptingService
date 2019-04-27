@@ -70,7 +70,9 @@ public class BetStatControllerIT {
 		HttpEntity<DateRange> entity = new HttpEntity<DateRange>(dateRange, 
 				headers);
 		//When
-		ResponseEntity<BigDecimal> response = restTemplate.exchange(
+		ResponseEntity<BigDecimal> response = restTemplate
+				.withBasicAuth("admin", "password")
+				.exchange(
 				createURLWithPort("/stat/averageBetPerHour"),
 				HttpMethod.POST, entity, BigDecimal.class);
 		

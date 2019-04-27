@@ -1,1 +1,1 @@
- curl -v http://localhost:8080/stat/totalBetCountByType/DOUBLE
+ curl -v http://localhost:8080/stat/totalBetCountByType/DOUBLE -u admin:password

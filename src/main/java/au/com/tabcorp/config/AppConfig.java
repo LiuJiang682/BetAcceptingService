@@ -1,4 +1,4 @@
-package au.com.tabcorp;
+package au.com.tabcorp.config;
 
 import java.util.List;
 
