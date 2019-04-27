@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -47,6 +48,9 @@ public class Bet implements Serializable {
 	private long customerId;
 	@Column(name="investment_amount")
 	private double investmentAmount;
+	@JsonIgnore
+	@Column(name="created")
+	private LocalDateTime created;
 
 	public long getBetId() {
 		return betId;
@@ -96,6 +100,14 @@ public class Bet implements Serializable {
 		this.betType = betType;
 	}
 	
+	public LocalDateTime getCreated() {
+		return created;
+	}
+
+	public void setCreated(LocalDateTime created) {
+		this.created = created;
+	}
+
 	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(this);
 	}

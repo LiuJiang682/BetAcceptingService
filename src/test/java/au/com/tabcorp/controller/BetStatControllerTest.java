@@ -20,6 +20,7 @@ import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
+import au.com.tabcorp.model.DateRange;
 import au.com.tabcorp.services.BetService;
 import au.com.tabcorp.test.fixture.TestFixture;
 
@@ -79,5 +80,19 @@ public class BetStatControllerTest {
 		BetCount betCount = result.getBody();
 		assertThat(betCount.getBetType(), is(equalTo(betType)));
 		assertThat(betCount.getBetCount(), is(equalTo(200l)));
+	}
+	
+	@Test
+	public void shouldReturnAveragePerHour() {
+		//Given
+		DateRange dateRange = new DateRange();
+		when(mockBetService.getAveragePerHourBetween(eq(dateRange)))
+			.thenReturn(BigDecimal.TEN);
+		//When
+		ResponseEntity<BigDecimal> result = testInstance.getAverageBetPerHour(dateRange);
+		//Then
+		assertThat(result, is(notNullValue()));
+		BigDecimal average = result.getBody();
+		assertThat(average, is(equalTo(BigDecimal.TEN)));
 	}
 }

@@ -1,5 +1,7 @@
 package au.com.tabcorp.repositories;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -19,7 +21,10 @@ public interface BetRepository extends CrudRepository<Bet, Long> {
 	@Query("SELECT new au.com.tabcorp.model.CustomerTotal(b.customerId, sum(investmentAmount)) FROM Bet b WHERE b.customerId = :customerId GROUP BY b.customerId")
 	CustomerTotal getTotalInvestmentByCustomer(final Long customerId);
 
-	@Query("SELECT new au.com.tabcorp.model.BetCount(b.betType, count(*)) FROM Bet b WHERE b.betType = :betType GROUP BY b.betType")
+	@Query("SELECT new au.com.tabcorp.model.BetCount(b.betType, count(b.betId)) FROM Bet b WHERE b.betType = :betType GROUP BY b.betType")
 	BetCount getBetCountByBetType(BetType betType);
+
+	@Query("SELECT COUNT(b.betId) FROM Bet b WHERE b.created BETWEEN :from AND :to")
+	Long getBetCountByRange(LocalDateTime from, LocalDateTime to);
 	
 }

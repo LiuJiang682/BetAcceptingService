@@ -1,10 +1,13 @@
 package au.com.tabcorp.controller;
 
+import java.math.BigDecimal;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +16,7 @@ import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
+import au.com.tabcorp.model.DateRange;
 import au.com.tabcorp.services.BetService;
 
 @RestController
@@ -42,5 +46,12 @@ public class BetStatController {
 		LOGGER.info("Abount to get total bet count for bet type: " + betType);
 		BetCount betCount = betService.getBetCountByBetType(betType);
 		return new ResponseEntity<BetCount>(betCount, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/stat/averageBetPerHour", method = RequestMethod.GET)
+	public ResponseEntity<BigDecimal> getAverageBetPerHour(@RequestBody DateRange dateRange) {
+		LOGGER.info("Abount to get average bet per hour " + dateRange);
+		BigDecimal averagePerHour = betService.getAveragePerHourBetween(dateRange);
+		return new ResponseEntity<BigDecimal>(averagePerHour, HttpStatus.OK);
 	}
 }

@@ -4,25 +4,31 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
+import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import au.com.tabcorp.constants.Constants.Numeric;
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
 import au.com.tabcorp.model.CustomerTotal;
+import au.com.tabcorp.model.DateRange;
 import au.com.tabcorp.test.fixture.TestFixture;
 
 public class BetServicesImplTest {
@@ -97,8 +103,86 @@ public class BetServicesImplTest {
 			.thenReturn(TestFixture.getBetCount());
 		//When
 		BetCount betCount = testInstance.getBetCountByBetType(betType);
+		//Then
 		assertThat(betCount, is(notNullValue()));
 		assertThat(betCount.getBetType(), is(equalTo(betType)));
 		assertThat(betCount.getBetCount(), is(equalTo(200l)));
+	}
+	
+	@Test
+	public void shouldReturnAveragePerHourBetweenWithouModifyWhenAllDatePresent() {
+		//Given
+		DateRange dateRange = new DateRange();
+		LocalDateTime now =LocalDateTime.now();
+		dateRange.setTo(now);
+		LocalDateTime from = now.minusDays(Numeric.ONE);
+		dateRange.setFrom(from);
+		when(mockBetPersistenceService.getBetCountByRange(eq(dateRange.getFrom()),
+				eq(dateRange.getTo())))
+			.thenReturn(24l);
+		//When
+		BigDecimal average = testInstance.getAveragePerHourBetween(dateRange);
+		//Then
+		assertThat(average, is(equalTo(BigDecimal.ONE)));
+	}
+	
+	@Test
+	public void shouldReturnAveragePerHourBetweenWithouModifyWhenToMissing() {
+		//Given
+		DateRange dateRange = new DateRange();
+		LocalDateTime now =LocalDateTime.now();
+		LocalDateTime from = now.minusDays(Numeric.ONE);
+		dateRange.setFrom(from);
+		when(mockBetPersistenceService.getBetCountByRange(eq(dateRange.getFrom()),
+				Matchers.any(LocalDateTime.class)))
+			.thenReturn(24l);
+		//When
+		BigDecimal average = testInstance.getAveragePerHourBetween(dateRange);
+		//Then
+		assertThat(average, is(equalTo(BigDecimal.ONE)));
+		ArgumentCaptor<LocalDateTime> nowCaptor = ArgumentCaptor.forClass(LocalDateTime.class);
+		ArgumentCaptor<LocalDateTime> fromCaptor = ArgumentCaptor.forClass(LocalDateTime.class);
+		verify(mockBetPersistenceService).getBetCountByRange(fromCaptor.capture(), 
+				nowCaptor.capture());
+		LocalDateTime capturedFrom = fromCaptor.getValue();
+		assertThat(capturedFrom, is(equalTo(from)));
+		LocalDateTime capturedTo = nowCaptor.getValue();
+		assertThat(capturedTo.isAfter(now), is(true));
+	}
+	
+	@Test
+	public void shouldReturnAveragePerHourBetweenWithouModifyWhenFromMissing() {
+		//Given
+		DateRange dateRange = new DateRange();
+		LocalDateTime now =LocalDateTime.now();
+		dateRange.setTo(now);
+		when(mockBetPersistenceService.getBetCountByRange(
+				Matchers.any(LocalDateTime.class),
+				eq(now)))
+			.thenReturn(1l);
+		//When
+		BigDecimal average = testInstance.getAveragePerHourBetween(dateRange);
+		//Then
+		assertThat(average, is(equalTo(BigDecimal.ONE)));
+		ArgumentCaptor<LocalDateTime> nowCaptor = ArgumentCaptor.forClass(LocalDateTime.class);
+		ArgumentCaptor<LocalDateTime> fromCaptor = ArgumentCaptor.forClass(LocalDateTime.class);
+		verify(mockBetPersistenceService).getBetCountByRange(fromCaptor.capture(), 
+				nowCaptor.capture());
+		LocalDateTime capturedFrom = fromCaptor.getValue();
+		assertThat(ChronoUnit.HOURS.between(capturedFrom, now), is(equalTo(1l)));
+		LocalDateTime capturedTo = nowCaptor.getValue();
+		assertThat(capturedTo, is(equalTo(now)));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void shouldRaiseExceptionBetweenIsZero() {
+		//Given
+		DateRange dateRange = new DateRange();
+		LocalDateTime now =LocalDateTime.now();
+		dateRange.setTo(now);
+		dateRange.setFrom(now);
+		//When
+		testInstance.getAveragePerHourBetween(dateRange);
+		fail("Program reached unexpected point!");
 	}
 }

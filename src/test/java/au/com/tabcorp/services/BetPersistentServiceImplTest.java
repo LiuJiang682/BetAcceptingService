@@ -8,6 +8,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import au.com.tabcorp.constants.Constants.Numeric;
 import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
@@ -75,5 +77,19 @@ public class BetPersistentServiceImplTest {
 		assertThat(betCount, is(notNullValue()));
 		assertThat(betCount.getBetType(), is(equalTo(BetType.WIN)));
 		assertThat(betCount.getBetCount(), is(equalTo(200l)));
+	}
+	
+	@Test
+	public void shouldCallGetBetCountByRange() {
+		//Given
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime from = now.minusHours(Numeric.ONE);
+		when(mockBetRepository.getBetCountByRange(eq(from), eq(now)))
+			.thenReturn(3l);
+		//When
+		Long betCount = testInstance.getBetCountByRange(from, now);
+		//Then
+		assertThat(betCount, is(notNullValue()));
+		assertThat(betCount, is(equalTo(3l)));
 	}
 }

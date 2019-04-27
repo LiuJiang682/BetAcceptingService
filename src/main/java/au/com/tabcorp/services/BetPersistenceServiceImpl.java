@@ -1,5 +1,7 @@
 package au.com.tabcorp.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class BetPersistenceServiceImpl implements BetPersistenceService {
 	
 	@Override
 	public void save(Bet bet) {
+		bet.setCreated(LocalDateTime.now());
 		betRepository.save(bet);
 	}
 
@@ -34,6 +37,11 @@ public class BetPersistenceServiceImpl implements BetPersistenceService {
 	@Override
 	public BetCount getBetCountByBetType(BetType betType) {
 		return betRepository.getBetCountByBetType(betType);
+	}
+
+	@Override
+	public Long getBetCountByRange(LocalDateTime from, LocalDateTime to) {
+		return betRepository.getBetCountByRange(from, to);
 	}
 
 }

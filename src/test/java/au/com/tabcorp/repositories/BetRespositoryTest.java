@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import au.com.tabcorp.constants.Constants.Numeric;
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.BetCount;
 import au.com.tabcorp.model.BetType;
@@ -81,5 +83,30 @@ public class BetRespositoryTest {
 		assertThat(betCount, is(notNullValue()));
 		assertThat(betCount.getBetType(), is(equalTo(BetType.WIN)));
 		assertThat(betCount.getBetCount(), is(equalTo(2l)));
+	}
+	
+	@Test
+	public void ShouldReturnBetCountByRange() {
+		//Given
+		betRepository.deleteAll();
+		LocalDateTime now = LocalDateTime.now();
+		Bet bet1 = TestFixture.getBet();
+		bet1.setCreated(now);
+		Bet bet2 = TestFixture.getBet();
+		bet2.setCreated(now);
+		betRepository.save(bet1);
+		betRepository.save(bet2);
+		Bet bet3 = TestFixture.getBet();
+		bet3.setBetType(BetType.DOUBLE);
+		bet3.setCreated(now);
+		betRepository.save(bet3);
+		LocalDateTime from = now.minusHours(Numeric.ONE);
+		
+		//When
+		Long betCount = betRepository
+				.getBetCountByRange(from, now);
+		//Then
+		assertThat(betCount, is(notNullValue()));
+		assertThat(betCount, is(equalTo(3l)));
 	}
 }
