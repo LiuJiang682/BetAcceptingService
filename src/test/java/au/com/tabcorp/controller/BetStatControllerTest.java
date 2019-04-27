@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
+import au.com.tabcorp.model.CustomerTotal;
 import au.com.tabcorp.services.BetService;
 import au.com.tabcorp.test.fixture.TestFixture;
 
@@ -47,5 +48,20 @@ public class BetStatControllerTest {
 		BetTypeTotal betTypeTotal = result.getBody();
 		assertThat(betTypeTotal.getBetType(), is(equalTo(betType)));
 		assertThat(betTypeTotal.getTotal(), is(equalTo(new BigDecimal(200d))));
+	}
+	
+	@Test
+	public void shouldReturnTotalByCustomer() {
+		//Given
+		long customerId = 1;
+		when(mockBetService.getTotalInvestmentByCustomer(eq(customerId)))
+			.thenReturn(TestFixture.getCustomerTotal());
+		//When
+		ResponseEntity<CustomerTotal> result = testInstance.getTotalInvestmentByCustomer(customerId);
+		//Then
+		assertThat(result, is(notNullValue()));
+		CustomerTotal customerTotal = result.getBody();
+		assertThat(customerTotal.getCustomerId()  == customerId, is(true));
+		assertThat(customerTotal.getTotal(), is(equalTo(new BigDecimal(200d))));
 	}
 }

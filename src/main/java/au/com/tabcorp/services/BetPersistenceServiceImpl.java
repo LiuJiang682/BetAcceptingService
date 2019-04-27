@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
+import au.com.tabcorp.model.CustomerTotal;
 import au.com.tabcorp.repositories.BetRepository;
 
 @Service
@@ -22,6 +23,11 @@ public class BetPersistenceServiceImpl implements BetPersistenceService {
 	@Override
 	public BetTypeTotal getTotalInvestmentByBetType(BetType betType) {
 		return betRepository.getTotalInvestmentByBetType(betType);
+	}
+
+	@Override
+	public CustomerTotal getTotalInvestmentByCustomer(Long customerId) {
+		return betRepository.getTotalInvestmentByCustomer(customerId);
 	}
 
 }

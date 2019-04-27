@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
+import au.com.tabcorp.model.CustomerTotal;
 import au.com.tabcorp.repositories.BetRepository;
 import au.com.tabcorp.test.fixture.TestFixture;
 
@@ -45,5 +46,19 @@ public class BetPersistentServiceImplTest {
 		assertThat(betTypeTotal, is(notNullValue()));
 		assertThat(betTypeTotal.getBetType(), is(equalTo(BetType.WIN)));
 		assertThat(betTypeTotal.getTotal(), is(equalTo(new BigDecimal(200d))));
+	}
+	
+	@Test
+	public void shouldCallGetTotalInvestmentByCustomerId() {
+		//Given
+		long customerId = 1;
+		when(mockBetRepository.getTotalInvestmentByCustomer(eq(customerId)))
+		.thenReturn(TestFixture.getCustomerTotal());
+		//When
+		CustomerTotal customerTotal = testInstance.getTotalInvestmentByCustomer(customerId);
+		//Then
+		assertThat(customerTotal, is(notNullValue()));
+		assertThat(customerTotal.getCustomerId(), is(equalTo(customerId)));
+		assertThat(customerTotal.getTotal(), is(equalTo(new BigDecimal(200d))));
 	}
 }

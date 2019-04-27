@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import au.com.tabcorp.model.Bet;
 import au.com.tabcorp.model.BetType;
 import au.com.tabcorp.model.BetTypeTotal;
+import au.com.tabcorp.model.CustomerTotal;
 
 public class TestFixture {
 
@@ -28,6 +29,10 @@ public class TestFixture {
 	
 	public static final BetTypeTotal getBetTypeTotal() {
 		return new BetTypeTotal(BetType.WIN, 200d);
+	}
+
+	public static CustomerTotal getCustomerTotal() {
+		return new CustomerTotal(1, 200d);
 	}
 	
 }

@@ -1,1 +1,1 @@
-curl -v http://localhost:8080/stat/WIN
+curl -v http://localhost:8080/stat/totalByType/WIN
