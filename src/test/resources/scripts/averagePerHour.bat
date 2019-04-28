@@ -1,0 +1,1 @@
+curl -v -d "{}" --header "Content-Type: application/json" -u admin:password -X POST http://localhost:8080/stat/averageBetPerHour

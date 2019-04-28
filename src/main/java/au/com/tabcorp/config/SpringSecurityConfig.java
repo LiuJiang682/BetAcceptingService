@@ -45,6 +45,14 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		LOGGER.info("config auth");
+		
+		/**
+		 * Using inMemoryAuthentication for now. For more complexity user, group, role and
+		 * permissions, use auth.jdbcAuthentication(), auth.ldapAuthentication() or 
+		 * auth.authenticationProvider(customAuthenticationProvider)to perform security
+		 * related operations.
+		 */
+		
         auth.inMemoryAuthentication()
                 .withUser("user").password("{noop}password").roles("USER")
                 .and()
@@ -55,18 +63,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		LOGGER.info("config http");
-		/**
-		http
-			.httpBasic()
-			.and()
-			.authorizeRequests()
-			.antMatchers(HttpMethod.PUT, "/**").hasRole("USER")
-			.antMatchers(HttpMethod.GET, "/stat/**").hasRole("ADMIN")
-			.antMatchers(HttpMethod.POST, "/stat/**").hasRole("ADMIN")
-			.and()
-			.csrf().disable()
-			.formLogin().disable();
-			*/
+		
 		http
 			.csrf().disable()
 			.authorizeRequests()

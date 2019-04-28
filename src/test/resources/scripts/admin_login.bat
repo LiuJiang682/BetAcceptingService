@@ -1,0 +1,1 @@
+curl -v -i -X POST -d username=admin -d password=password -c admin-cookies.txt http://localhost:8080/login

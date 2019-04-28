@@ -51,3 +51,41 @@ Sample Bet Data
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d. Total number of bets sold per hour
 
 - Add security to the Microservice
+
+
+### Installation Guide
+
+**Prerequisite**
+
+Please verify that the target machine has the following software packages installed:
+
+- Java 8
+- Maven
+- Git
+- curl
+
+**Install, Build and Run the Application**
+
+1. Create a target directory
+2. Open a new command prompt (Window box) or terminal (Linux box)
+3. Go to the target directory:
+   
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`cd path-to-target-dir`
+4. Checkout the code:
+	
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`git clone https://github.com/LiuJiang682/BetAcceptingService.git`
+5. To build the application, run this command:
+
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mvn clean install` 
+6. If the build success, run this command to start the application:
+
+   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`mvn spring-boot:run` 
+
+**Test the application**
+
+To test the application, please pay attention to the src/test/resource directory and its scripts sub-directory.
+
+ - bet.json file has all bet related fields, please modify this file according to your test scenario before you execute your test scenario for place bet.
+ - There are 2 login script files in the script directory, they login user and admin respectively.
+ - After run respective login script, testing can start with rest of scripts, those scripts with _adminCookies.sh use the amdin_login.sh cookie. Those scripts without adminCookies.sh use user:password to login every time execute.
+ - Windows user please use respected batch files install of shell script files.. 
